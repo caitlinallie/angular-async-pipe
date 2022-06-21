@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     fetchUserData(): Observable<User[]> {
         return this.userService.getUsers().pipe(
             delay(1000), // simulate waiting for data response
-            tap(console.log),
+            tap(console.log)
         );
     }
 

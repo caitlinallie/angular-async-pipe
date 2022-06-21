@@ -23,11 +23,13 @@
         <i class="fas fa-spinner fa-spin"></i> Loading...
     </ng-template>
 
-    <ng-container *ngIf="(users$ | async) as users; else loading;">
-        <ul>
-            <li *ngFor="let user of users"> {{user.name.first}} {{user.name.last}}</li>
-        </ul>
-    </ng-container>
+    <div class="user-list">
+        <ng-container *ngIf="(users$ | async) as users; else loading;">
+            <ul>
+                <li *ngFor="let user of users"> {{user.name.first}} {{user.name.last}}</li>
+            </ul>
+        </ng-container>
+    </div>
 
     <p class="info">
         <strong>Note:</strong> Every time you use the async pipe on your template, that is a separate subscription to your asynchronous data.
