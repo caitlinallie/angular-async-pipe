@@ -56,7 +56,8 @@
     <label for="lastName">Last Name: </label>
     <input type="text" id="lastName" [(ngModel)]="userToAdd.name.last">
 
-    <button type="button" (click)="addUser()">Add User</button>
+    <button type="button" (click)="addUserWithBehaviorSubject()">Add User</button>
+    <button type="button" (click)="addUserWithReassignment()">Add User</button>
 
 
     <hr>

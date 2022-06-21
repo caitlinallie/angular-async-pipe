@@ -23,6 +23,10 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
         this.users$ = this.fetchUserData();
 
+        this.setUserWithUpdates();
+    }
+
+    setUserWithUpdates(): void {
         // Whenever refreshUsers$ changes, the new call to fetchUserData() will be made
         this.usersWithUpdates$ = this.refreshUsers$.pipe(
             switchMap(() => this.fetchUserData())
@@ -40,11 +44,19 @@ export class AppComponent implements OnInit {
     }
 
     /**
-     * Add new user and emit event to refresh users
+     * Add new user and utilize BehaviorSubject to refresh users
      */
-    addUser() {
+    addUserWithBehaviorSubject() {
         this.userService.addUser(this.userToAdd);
         this.userToAdd = { name: { first: '', last: '' } };
         this.refreshUsers$.next(this.userToAdd);
+    }
+
+    /**
+     * Add new user and reassign the observable to refresh users
+     */
+    addUserWithReassignment() {
+        this.userService.addUser(this.userToAdd);
+        this.setUserWithUpdates();
     }
 }
