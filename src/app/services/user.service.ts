@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export interface User {
     name: {
@@ -25,11 +25,11 @@ export class UserService {
         }
     }];
 
-    getUsers() {
+    getUsers(): Observable<User[]> {
         return of(this.users);
     }
 
-    addUser(user: User) {
+    addUser(user: User): void {
         this.users = [...this.users, user];
     }
 
