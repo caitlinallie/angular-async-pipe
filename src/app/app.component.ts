@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, delay, Observable, switchMap, tap } from "rxjs";
+import { BehaviorSubject, delay, map, Observable, tap } from 'rxjs';
 import { User, UserService } from './services/user.service';
 
 /**
@@ -28,9 +28,12 @@ export class AppComponent implements OnInit {
 
     setUserWithUpdates(): void {
         // Whenever refreshUsers$ changes, the new call to fetchUserData() will be made
-        this.usersWithUpdates$ = this.refreshUsers$.pipe(
-            switchMap(() => this.fetchUserData())
-        );
+        // this.usersWithUpdates$ = this.refreshUsers$.pipe(
+        //     switchMap(() => this.fetchUserData())
+        // );
+
+        // Use this for example without BehaviorSubject
+        this.usersWithUpdates$ = this.fetchUserData();
     }
 
     /**
@@ -47,16 +50,22 @@ export class AppComponent implements OnInit {
      * Add new user and utilize BehaviorSubject to refresh users
      */
     addUserWithBehaviorSubject() {
-        this.userService.addUser(this.userToAdd);
-        this.userToAdd = { name: { first: '', last: '' } };
-        this.refreshUsers$.next(this.userToAdd);
+        this.userService.addUser(this.userToAdd).pipe(
+            map(() => {
+                this.userToAdd = { name: { first: '', last: '' } };
+                this.refreshUsers$.next(this.userToAdd);
+            })
+        ).subscribe();
     }
 
     /**
      * Add new user and reassign the observable to refresh users
      */
     addUserWithReassignment() {
-        this.userService.addUser(this.userToAdd);
-        this.setUserWithUpdates();
+        this.userService.addUser(this.userToAdd).pipe(
+            map(() => {
+                this.setUserWithUpdates();
+            })
+        ).subscribe();
     }
 }

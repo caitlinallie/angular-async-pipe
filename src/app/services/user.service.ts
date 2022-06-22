@@ -29,8 +29,9 @@ export class UserService {
         return of(this.users);
     }
 
-    addUser(user: User): void {
+    addUser(user: User): Observable<string> {
         this.users = [...this.users, user];
+        return of('User added successfully!');
     }
 
 }
